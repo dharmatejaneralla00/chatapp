@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .div_msg {
+        border: 1px solid black;
+        margin: 5px;
+    }
+</style>
+
+<body>
+    <div id="messages">
+        {% for msg in msgs %}
+        <div class="div_msg">
+            <p>{{msg.user}}</p>
+            <p>{{msg.msg}}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <form id="post_form">
+        {% csrf_token %}
+        <input type="hidden" name="roomid" value="{{room.roomid}}">
+        <input type="hidden" name="user" value="{{user.username}}">
+        <input type="text" name="msg" id="msg" placeholder="messge">
+        <button type="submit">Send</button>
+    </form>
+</body>
+<script>
+    const form = document.getElementById('post_form');
+    const formData = new FormData(form);
+    console.log(formData);
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const formData = new FormData(form);
+        fetch('/sendmsg', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('msg').value = ''
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('Error:', error);
+            });
+    });
+    function recievemsg() {
+        fetch('/recievemsg/{{room.roomid}}', {
+            method: 'GET',
+        }).then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+        }).then(data => {
+            msgdata = document.getElementById('messages')
+            msgdata.innerHTML = ''
+            data.msgs.forEach(msg => {
+                const messageElement = document.createElement('div');
+                messageElement.innerHTML = `<div class="div_msg"><p>${msg.user}</p><p>${msg.msg}</p></div>`;
+                msgdata.appendChild(messageElement);
+            });
+        })
+    }
+    setInterval(recievemsg, 1000)
+</script>
+
+</html>

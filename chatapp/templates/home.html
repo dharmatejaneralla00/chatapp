@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    {{ user.username }}
+    <a href="{% url 'logout' %}">Logout</a>
+    <br>
+    {% for room in rooms %}
+    <a href="{% url 'chat' room.roomid %}">{{room.roomid}}</a>
+    {% endfor %}
+</body>
+
+</html>
