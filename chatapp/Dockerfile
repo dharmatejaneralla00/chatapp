@@ -9,4 +9,4 @@ RUN pip install -r requirements.txt
 ENTRYPOINT ["python3"]
 EXPOSE 9000
 
-CMD ["manage.py","runserver","0.0.0.0:9000" ]
+CMD ["manage.py","runserver","127.0.0.1:9000" ]
