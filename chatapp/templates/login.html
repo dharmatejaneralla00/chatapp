@@ -10,9 +10,9 @@
 <body>
     <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
-        <input type="text" name="username" id="" placeholder="username">
-        <input type="password" name="password" id="" placeholder="password">
-        <button type="submit">Login Button</button>
+        <input type="text" name="username" id="" placeholder="user">
+        <input type="password" name="password" id="" placeholder="pass">
+        <button type="submit">Login</button>
     </form>
 </body>
 
